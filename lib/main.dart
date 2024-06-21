@@ -16,37 +16,84 @@ void main(List<String> args) async {
       ],
       path: 'resources/langs',
       startLocale: const Locale("en"),
-      child: const Converter(),
+      child: Converter(),
     ),
   );
 }
 
-class Converter extends StatelessWidget {
-  const Converter({super.key});
+class Converter extends StatefulWidget {
+  Converter({super.key});
+
+  @override
+  State<Converter> createState() => _ConverterState();
+}
+
+class _ConverterState extends State<Converter> {
+  TextTheme mainTextTheme = GoogleFonts.aboretoTextTheme();
+
+  changeMainTheme(int id) {
+    print(id);
+    switch (id) {
+      case 1:
+        mainTextTheme = GoogleFonts.robotoCondensedTextTheme();
+        break;
+      case 2:
+        mainTextTheme = GoogleFonts.newRockerTextTheme();
+        break;
+      case 3:
+        mainTextTheme = GoogleFonts.actorTextTheme();
+        break;
+      case 4:
+        mainTextTheme = GoogleFonts.poppinsTextTheme();
+        break;
+      case 5:
+        mainTextTheme = GoogleFonts.robotoMonoTextTheme();
+        break;
+      case 6:
+        mainTextTheme = GoogleFonts.oswaldTextTheme();
+        break;
+      case 7:
+        mainTextTheme = GoogleFonts.sacramentoTextTheme();
+        break;
+      case 8:
+        mainTextTheme = GoogleFonts.rubikTextTheme();
+        break;
+      case 9:
+        mainTextTheme = GoogleFonts.playfairTextTheme();
+        break;
+      default:
+        mainTextTheme = GoogleFonts.aboretoTextTheme();
+        break;
+    }
+    // AdaptiveTheme.of(context).reset();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return AdaptiveTheme(
       light: ThemeData(
-        textTheme: GoogleFonts.aboretoTextTheme(),
+        textTheme: mainTextTheme,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
       dark: ThemeData.dark().copyWith(
-        textTheme: GoogleFonts.aboretoTextTheme(
-          ThemeData(brightness: Brightness.dark).textTheme,
-        ),
+        textTheme: mainTextTheme,
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.blue,
           brightness: Brightness.dark,
         ),
       ),
       initial: AdaptiveThemeMode.system,
-      builder: (light, dark) => MaterialApp(
-        theme: light,
-        darkTheme: dark,
-        debugShowCheckedModeBanner: false,
-        home: const Bottomnavpage(),
-      ),
+      builder: (light, dark) {
+        return MaterialApp(
+          theme: light,
+          darkTheme: dark,
+          debugShowCheckedModeBanner: false,
+          home: Bottomnavpage(
+            changeMainTheme: changeMainTheme,
+          ),
+        );
+      },
     );
   }
 }

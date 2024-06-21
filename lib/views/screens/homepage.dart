@@ -118,17 +118,23 @@ class _HomepageState extends State<Homepage> {
               },
             ),
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.inversePrimary),
-            onPressed: () {
-              more = !more;
-              setState(() {});
-            },
-            child: const Text("View more"),
-          )
         ],
       ),
+      floatingActionButton: Container(
+        width: 150,
+        height: 50,
+        child: FloatingActionButton(
+          onPressed: () {
+            more = !more;
+            setState(() {});
+          },
+          child: const Text(
+            "View more",
+          ),
+        ),
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
     );
   }
 }

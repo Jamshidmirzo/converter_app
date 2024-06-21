@@ -5,59 +5,55 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-// ignore: must_be_immutable
-class Excahngepage extends StatefulWidget {
-  int index;
+class ExchangePage extends StatefulWidget {
+  final int index;
   final currency;
-  Excahngepage({super.key, required this.currency, required this.index});
+
+  ExchangePage({Key? key, required this.currency, required this.index})
+      : super(key: key);
 
   @override
-  State<Excahngepage> createState() => _ExcahngepageState();
+  _ExchangePageState createState() => _ExchangePageState();
 }
 
-class _ExcahngepageState extends State<Excahngepage> {
-  late String firsttitle;
+class _ExchangePageState extends State<ExchangePage> {
+  late String firstTitle;
   String code = '';
-  final currencycontroller = TextEditingController();
-  String secondtitle = 'Dollar';
-  String newtitel = '';
-  int index = 0;
+  final currencyController = TextEditingController();
+  String secondTitle = 'Dollar';
   double result = 0;
-  double buyprice = 0;
-  double sellprice = 0;
+  double buyPrice = 0;
+  double sellPrice = 0;
   String currency = 'UZS';
   bool buy = false;
   bool sell = true;
-  final formkey = GlobalKey<FormState>();
-  final currcenviewmodel = Currencyviewmodel();
+  final formKey = GlobalKey<FormState>();
+  final currencyViewModel = Currencyviewmodel();
+
   @override
   void initState() {
-    code = widget.currency.code;
-    index = widget.index;
-    firsttitle = widget.currency.title;
-    buyprice = double.tryParse(widget.currency.nbu_buy_price) ?? 0;
-    sellprice = double.tryParse(widget.currency.nbu_cell_price) ?? 0;
     super.initState();
+    code = widget.currency.code;
+    firstTitle = widget.currency.title;
+    buyPrice = double.tryParse(widget.currency.nbu_buy_price) ?? 0;
+    sellPrice = double.tryParse(widget.currency.nbu_cell_price) ?? 0;
   }
 
-  exchange() {
-    if (formkey.currentState!.validate()) {
-      if (buy) {
-        result = buyprice * double.parse(currencycontroller.text);
-        setState(() {});
-      }
-      if (sell) {
-        result = double.parse(currencycontroller.text) / sellprice;
-      }
+  void exchange() {
+    if (formKey.currentState!.validate()) {
+      double amount = double.parse(currencyController.text);
+      setState(() {
+        result = buy ? buyPrice * amount : amount / sellPrice;
+      });
     }
   }
 
-  void _showModalBottomSheet(BuildContext context) async {
-    final responce = await showModalBottomSheet(
+  Future<void> _showModalBottomSheet(BuildContext context) async {
+    final response = await showModalBottomSheet(
       context: context,
       builder: (context) {
         return FutureBuilder(
-          future: currcenviewmodel.getfornotnull(),
+          future: currencyViewModel.getfornotnull(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -70,19 +66,15 @@ class _ExcahngepageState extends State<Excahngepage> {
                 child: Text(snapshot.error.toString()),
               );
             }
-            if (snapshot.data == null || snapshot.data!.isEmpty) {
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Center(
                 child: Text('ma`lumotlar hozircha yoq!'),
               );
             }
             return ListView.separated(
-              separatorBuilder: (context, index) {
-                return const SizedBox(
-                  height: 15,
-                );
-              },
               padding: const EdgeInsets.all(20),
               itemCount: snapshot.data!.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 15),
               itemBuilder: (context, index) {
                 final currency = snapshot.data![index];
                 return Currencyinfo(
@@ -97,11 +89,11 @@ class _ExcahngepageState extends State<Excahngepage> {
         );
       },
     );
-    if (responce != null) {
-      setState(() {});
-      firsttitle = responce['title'];
-      index = responce['photo'];
-      code = responce['code'];
+    if (response != null) {
+      setState(() {
+        firstTitle = response['title'];
+        currency = response['code'];
+      });
     }
   }
 
@@ -110,174 +102,178 @@ class _ExcahngepageState extends State<Excahngepage> {
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 500,
-                child: Column(
-                  children: [
-                    Flexible(
-                      child: Stack(
-                        children: [
-                          Align(
-                            alignment: const Alignment(0, -0.9),
-                            child: ZoomTapAnimation(
-                              onTap: () {
-                                _showModalBottomSheet(context);
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                width: double.infinity,
-                                height: 130,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .inversePrimary),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 60,
-                                      height: 60,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Cards(id: index),
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 500,
+              child: Column(
+                children: [
+                  Flexible(
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: const Alignment(0, -0.9),
+                          child: ZoomTapAnimation(
+                            onTap: () => _showModalBottomSheet(context),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              width: double.infinity,
+                              height: 130,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 60,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                    const SizedBox(
-                                      width: 30,
+                                    child: Cards(code: currency),
+                                  ),
+                                  const SizedBox(width: 30),
+                                  Text(
+                                    firstTitle,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
                                     ),
-                                    Text(
-                                      firsttitle,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                    )
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          Align(
-                            alignment: const Alignment(0.9, 0.2),
-                            child: Form(
-                              key: formkey,
-                              child: Container(
-                                alignment: Alignment.center,
-                                width: double.infinity,
-                                height: 130,
-                                decoration: BoxDecoration(
+                        ),
+                        Align(
+                          alignment: const Alignment(0.9, 0.2),
+                          child: Form(
+                            key: formKey,
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              height: 130,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                              ),
+                              padding: const EdgeInsets.all(10),
+                              child: TextFormField(
+                                onChanged: (value) => exchange(),
+                                controller: currencyController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Ma`lumot korg`izing';
+                                  }
+                                  if (double.tryParse(value) == null) {
+                                    return 'Iltimos, raqam kirg`zing!';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  labelText: 'Input your price in $currency',
+                                  prefixIcon: const Icon(Icons.monetization_on),
+                                  border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .inversePrimary),
-                                padding: const EdgeInsets.all(10),
-                                child: TextFormField(
-                                  onChanged: (value) {
-                                    exchange();
-                                  },
-                                  controller: currencycontroller,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Ma`lumot korg`izing';
-                                    }
-                                    if (int.tryParse(value) == null) {
-                                      return 'iltimos raqam kirg`zing !';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    labelText: 'Input your price in $currency',
-                                    prefixIcon:
-                                        const Icon(Icons.monetization_on),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          Align(
-                            alignment: const Alignment(0.9, -0.3),
-                            child: ZoomTapAnimation(
-                              onTap: () {
-                                setState(() {});
+                        ),
+                        Align(
+                          alignment: const Alignment(0.9, -0.3),
+                          child: ZoomTapAnimation(
+                            onTap: () {
+                              setState(() {
                                 currency = code;
                                 buy = true;
                                 sell = false;
-                              },
-                              child: Container(
-                                  alignment: Alignment.center,
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.black.withOpacity(0.7)),
-                                  child: const Text(
-                                    'Sell',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  )),
+                                currencyController.clear();
+                                result = 0;
+                              });
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.black.withOpacity(0.7),
+                              ),
+                              child: const Text(
+                                'Sell',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
                             ),
                           ),
-                          Align(
-                            alignment: const Alignment(-0.9, -0.3),
-                            child: ZoomTapAnimation(
-                              onTap: () {
+                        ),
+                        Align(
+                          alignment: const Alignment(-0.9, -0.3),
+                          child: ZoomTapAnimation(
+                            onTap: () {
+                              setState(() {
                                 currency = 'UZS';
                                 buy = false;
                                 sell = true;
-                                setState(() {});
-                              },
-                              child: Container(
-                                  alignment: Alignment.center,
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.black.withOpacity(0.7)),
-                                  child: const Text(
-                                    'Buy',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 23),
-                                  )),
+                                currencyController.clear();
+                                result = 0;
+                              });
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.black.withOpacity(0.7),
+                              ),
+                              child: const Text(
+                                'Buy',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 23,
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          result.toStringAsFixed(2),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 40,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          buy ? "UZS" : code,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 40,
                           ),
                         ),
                       ],
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        result.toStringAsFixed(2),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 40,
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        buy ? "UZS" : code,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 40,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

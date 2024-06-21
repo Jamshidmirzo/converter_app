@@ -9,6 +9,7 @@ class Currencyinfo extends StatefulWidget {
   int index;
   bool more;
   int indextopage;
+
   Currencyinfo(
       {super.key,
       required this.currency,
@@ -21,6 +22,7 @@ class Currencyinfo extends StatefulWidget {
 }
 
 class _CurrencyinfoState extends State<Currencyinfo> {
+  bool isNotif = false;
   @override
   Widget build(BuildContext context) {
     return ZoomTapAnimation(
@@ -32,7 +34,7 @@ class _CurrencyinfoState extends State<Currencyinfo> {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return Excahngepage(
+                      return ExchangePage(
                           currency: widget.currency, index: widget.index);
                     },
                   ),
@@ -42,8 +44,8 @@ class _CurrencyinfoState extends State<Currencyinfo> {
             'title': widget.currency.title,
             'photo': widget.index,
             'buyprice': widget.currency.nbu_buy_price,
-          'cellprice':widget.currency.nbu_cell_price,
-          'code':widget.currency.code
+            'cellprice': widget.currency.nbu_cell_price,
+            'code': widget.currency.code
           });
         }
       },
@@ -59,7 +61,7 @@ class _CurrencyinfoState extends State<Currencyinfo> {
               Row(
                 children: [
                   Cards(
-                    id: widget.index,
+                    code: widget.currency.code,
                   ),
                   const SizedBox(
                     width: 10,
@@ -72,8 +74,16 @@ class _CurrencyinfoState extends State<Currencyinfo> {
                   ),
                   const Spacer(),
                   IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.notifications_active))
+                      onPressed: () {
+                        isNotif = !isNotif;
+                        setState(() {});
+                      },
+                      icon: Icon(
+                        Icons.notifications_active,
+                        color: isNotif
+                            ? Theme.of(context).colorScheme.errorContainer
+                            : null,
+                      ))
                 ],
               ),
               const SizedBox(

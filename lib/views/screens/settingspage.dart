@@ -1,10 +1,13 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:converter_app/views/widgets/showmoddombottomforfont.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+  final Function changeMainTheme;
+
+  SettingsPage({super.key, required this.changeMainTheme});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -148,6 +151,17 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  void _showFontBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Showmoddombottomforfont(
+          changeMainTheme: widget.changeMainTheme,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -204,6 +218,29 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ZoomTapAnimation(
+                onTap: () {
+                  _showFontBottomSheet(context);
+                },
+                child: const ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(
+                    Icons.text_fields_sharp,
+                    size: 50,
+                  ),
+                  title: Text(
+                    "Change Font",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios_rounded),
                 ),
               ),
             ],

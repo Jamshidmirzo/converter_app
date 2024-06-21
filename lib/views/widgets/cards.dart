@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class Cards extends StatelessWidget {
-  int id;
-  Cards({super.key, required this.id});
+class Cards extends StatefulWidget {
+  String code;
+
+  Cards({super.key, required this.code});
+
+  @override
+  State<Cards> createState() => _CardsState();
+}
+
+class _CardsState extends State<Cards> {
   List flags = [
     'https://flagpedia.net/data/flags/w580/ae.png',
     'https://img.freepik.com/premium-vector/australia-flag-blowing-wind-part-series-australia-waving-flag_126712-233.jpg',
@@ -30,6 +37,69 @@ class Cards extends StatelessWidget {
     'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/800px-Flag_of_Ukraine.svg.png',
     'https://cdn.britannica.com/79/4479-050-6EF87027/flag-Stars-and-Stripes-May-1-1795.jpg'
   ];
+
+  int id = 0;
+
+  filterbycode() {
+    print(widget.code);
+    switch (widget.code) {
+      case "AED":
+        id = 0;
+      case "AUD":
+        id = 1;
+      case "CAD":
+        id = 2;
+      case "CHF":
+        id = 3;
+      case "CNY":
+        id = 4;
+      case "DKK":
+        id = 5;
+      case "EGP":
+        id = 6;
+      case "EUR":
+        id = 7;
+      case "GBP":
+        id = 8;
+      case "ISK":
+        id = 9;
+      case "JPY":
+        id = 10;
+      case "KRW":
+        id = 11;
+      case "KWD":
+        id = 12;
+      case "KZT":
+        id = 13;
+      case "LBP":
+        id = 14;
+      case "MYR":
+        id = 15;
+      case "NOK":
+        id = 16;
+      case "PLN":
+        id = 17;
+      case "RUB":
+        id = 18;
+      case "SEK":
+        id = 19;
+      case "SGD":
+        id = 20;
+      case "TRY":
+        id = 21;
+      case "UAH":
+        id = 22;
+      case "USD":
+        id = 23;
+    }
+  }
+
+  @override
+  void initState() {
+    filterbycode();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
