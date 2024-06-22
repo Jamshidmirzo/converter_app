@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:converter_app/views/widgets/showmoddombottomforfont.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -18,6 +19,9 @@ class _SettingsPageState extends State<SettingsPage> {
   bool isChoiceuzbek = false;
   bool isChoicerus = false;
   bool isChoiceeng = false;
+  bool isSystem = true;
+  bool isDark = false;
+  bool isLight = false;
 
   @override
   void initState() {
@@ -30,6 +34,90 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       isDarkMode = themeMode == AdaptiveThemeMode.dark;
     });
+  }
+
+  void _showModalBottomSheetForMode(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              ZoomTapAnimation(
+                onTap: () {
+                  isSystem = true;
+                  isDark = false;
+                  isLight = false;
+                  setState(() {});
+                  Navigator.pop(context);
+                  AdaptiveTheme.of(context).setSystem();
+                },
+                child: ListTile(
+                  trailing: isSystem
+                      ? Icon(
+                          Icons.done,
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                        )
+                      : null,
+                  leading: const Icon(CupertinoIcons.device_phone_portrait),
+                  title: const Text(
+                    'Like a telephone',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                ),
+              ),
+              ZoomTapAnimation(
+                onTap: () {
+                  isSystem = false;
+                  isDark = false;
+                  isLight = true;
+                  setState(() {});
+                  Navigator.pop(context);
+                  AdaptiveTheme.of(context).setLight();
+                },
+                child: ListTile(
+                  trailing: isLight
+                      ? Icon(
+                          Icons.done,
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                        )
+                      : null,
+                  leading: const Icon(Icons.light_mode),
+                  title: const Text(
+                    'Light mode',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                ),
+              ),
+              ZoomTapAnimation(
+                onTap: () {
+                  isSystem = false;
+                  isDark = true;
+                  isLight = false;
+                  setState(() {});
+                  Navigator.pop(context);
+                  AdaptiveTheme.of(context).setDark();
+                },
+                child: ListTile(
+                  trailing: isDark
+                      ? Icon(
+                          Icons.done,
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                        )
+                      : null,
+                  leading: const Icon(Icons.dark_mode),
+                  title: const Text(
+                    'Dark mode',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   void _showModalBottomSheet(BuildContext context) {
@@ -174,35 +262,6 @@ class _SettingsPageState extends State<SettingsPage> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              Row(
-                children: [
-                  isDarkMode
-                      ? const Icon(
-                          Icons.dark_mode,
-                          size: 50,
-                        )
-                      : const Icon(
-                          Icons.light_mode,
-                          size: 50,
-                        ),
-                  const Spacer(),
-                  Switch(
-                    value: isDarkMode,
-                    onChanged: (value) {
-                      setState(
-                        () {
-                          isDarkMode = value;
-                          if (isDarkMode) {
-                            AdaptiveTheme.of(context).setDark();
-                          } else {
-                            AdaptiveTheme.of(context).setLight();
-                          }
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
               const SizedBox(height: 20),
               ZoomTapAnimation(
                 onTap: () {
@@ -243,6 +302,26 @@ class _SettingsPageState extends State<SettingsPage> {
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios_rounded),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ZoomTapAnimation(
+                onTap: () {
+                  _showModalBottomSheetForMode(context);
+                },
+                child: const ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(
+                    Icons.dark_mode_outlined,
+                    size: 50,
+                  ),
+                  title: Text(
+                    "Change mode",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
                   ),
                   trailing: Icon(Icons.arrow_forward_ios_rounded),
                 ),

@@ -105,7 +105,7 @@ class _ExchangePageState extends State<ExchangePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Exhange page"),
+        title: Text("Exhange"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: SingleChildScrollView(

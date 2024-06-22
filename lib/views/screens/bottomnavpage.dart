@@ -30,6 +30,7 @@ class _BottomnavpageState extends State<Bottomnavpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        // selectedItemColor: Theme.of(context).colorScheme.errorContainer,
         unselectedItemColor: Theme.of(context).colorScheme.inverseSurface,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         onTap: (value) {
@@ -41,7 +42,7 @@ class _BottomnavpageState extends State<Bottomnavpage> {
           BottomNavigationBarItem(
               icon: Icon(
                 CupertinoIcons.money_dollar_circle,
-                size: 30,
+                size: 27,
               ),
               label: 'Courses'),
           BottomNavigationBarItem(
