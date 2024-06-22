@@ -1,5 +1,8 @@
+import 'package:converter_app/views/screens/excahngepage.dart';
 import 'package:converter_app/views/screens/homepage.dart';
 import 'package:converter_app/views/screens/settingspage.dart';
+import 'package:converter_app/views/screens/smthpage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Bottomnavpage extends StatefulWidget {
@@ -18,7 +21,8 @@ class _BottomnavpageState extends State<Bottomnavpage> {
     super.initState();
     screens = [
       const Homepage(),
-      SettingsPage(changeMainTheme: widget.changeMainTheme)
+      ExchangePage(),
+      SettingsPage(changeMainTheme: widget.changeMainTheme),
     ];
   }
 
@@ -35,7 +39,13 @@ class _BottomnavpageState extends State<Bottomnavpage> {
         },
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.currency_exchange_outlined), label: 'Courses'),
+              icon: Icon(
+                CupertinoIcons.money_dollar_circle,
+                size: 30,
+              ),
+              label: 'Courses'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.currency_exchange_outlined), label: 'Exchange'),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), label: 'Settings'),
         ],

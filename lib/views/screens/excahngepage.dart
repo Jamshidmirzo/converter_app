@@ -1,3 +1,4 @@
+import 'package:converter_app/models/currency.dart';
 import 'package:converter_app/view_model/currencyviewmodel.dart';
 import 'package:converter_app/views/widgets/cards.dart';
 import 'package:converter_app/views/widgets/currencyinfo.dart';
@@ -6,17 +7,14 @@ import 'package:lottie/lottie.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class ExchangePage extends StatefulWidget {
-  final int index;
-  final currency;
-
-  ExchangePage({Key? key, required this.currency, required this.index})
-      : super(key: key);
+  ExchangePage({Key? key}) : super(key: key);
 
   @override
   _ExchangePageState createState() => _ExchangePageState();
 }
 
 class _ExchangePageState extends State<ExchangePage> {
+  final currencyViewModel = Currencyviewmodel();
   late String firstTitle;
   String code = '';
   final currencyController = TextEditingController();
@@ -27,16 +25,23 @@ class _ExchangePageState extends State<ExchangePage> {
   String currency = 'UZS';
   bool buy = false;
   bool sell = true;
+
   final formKey = GlobalKey<FormState>();
-  final currencyViewModel = Currencyviewmodel();
 
   @override
   void initState() {
     super.initState();
-    code = widget.currency.code;
-    firstTitle = widget.currency.title;
-    buyPrice = double.tryParse(widget.currency.nbu_buy_price) ?? 0;
-    sellPrice = double.tryParse(widget.currency.nbu_cell_price) ?? 0;
+    fetchInitialData();
+  }
+
+  Future<void> fetchInitialData() async {
+    Currency currency = await currencyViewModel.getDollar();
+    setState(() {
+      code = currency.code;
+      firstTitle = currency.title;
+      buyPrice = double.tryParse(currency.nbu_buy_price) ?? 0;
+      sellPrice = double.tryParse(currency.nbu_cell_price) ?? 0;
+    });
   }
 
   void exchange() {
@@ -81,7 +86,6 @@ class _ExchangePageState extends State<ExchangePage> {
                   indextopage: 0,
                   currency: currency,
                   index: index,
-                  more: false,
                 );
               },
             );
@@ -100,7 +104,10 @@ class _ExchangePageState extends State<ExchangePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Exhange page"),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(

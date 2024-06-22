@@ -165,6 +165,10 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Settings page"),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -204,7 +208,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: () {
                   _showModalBottomSheet(context);
                 },
-                child: ListTile(
+                child: const ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(
                     Icons.language,
@@ -212,7 +216,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   title: Text(
                     "Language",
-                    style: GoogleFonts.aboreto(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),

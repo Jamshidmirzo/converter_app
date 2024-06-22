@@ -14,7 +14,6 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   final currcenviewmodel = Currencyviewmodel();
   bool issearch = false;
-  bool more = false;
   final titlecontroller = TextEditingController();
   final formkey = GlobalKey<FormState>();
   filter() {
@@ -25,6 +24,7 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           issearch
               ? TextButton(
@@ -77,9 +77,7 @@ class _HomepageState extends State<Homepage> {
         children: [
           Flexible(
             child: FutureBuilder(
-              future: more
-                  ? currcenviewmodel.getCurency(titlecontroller.text)
-                  : currcenviewmodel.getfornotnull(),
+              future: currcenviewmodel.getCurency(titlecontroller.text),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -111,7 +109,6 @@ class _HomepageState extends State<Homepage> {
                       indextopage: 1,
                       currency: currency,
                       index: index,
-                      more: more,
                     );
                   },
                 );
@@ -120,21 +117,6 @@ class _HomepageState extends State<Homepage> {
           ),
         ],
       ),
-      floatingActionButton: Container(
-        width: 150,
-        height: 50,
-        child: FloatingActionButton(
-          onPressed: () {
-            more = !more;
-            setState(() {});
-          },
-          child: const Text(
-            "View more",
-          ),
-        ),
-      ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterFloat,
     );
   }
 }

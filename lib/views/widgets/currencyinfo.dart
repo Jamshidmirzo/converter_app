@@ -7,14 +7,12 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 class Currencyinfo extends StatefulWidget {
   final currency;
   int index;
-  bool more;
   int indextopage;
 
   Currencyinfo(
       {super.key,
       required this.currency,
       required this.index,
-      required this.more,
       required this.indextopage});
 
   @override
@@ -27,19 +25,7 @@ class _CurrencyinfoState extends State<Currencyinfo> {
   Widget build(BuildContext context) {
     return ZoomTapAnimation(
       onTap: () {
-        if (widget.indextopage == 1) {
-          widget.more
-              ? null
-              : Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return ExchangePage(
-                          currency: widget.currency, index: widget.index);
-                    },
-                  ),
-                );
-        } else {
+        if (widget.indextopage == 0) {
           Navigator.pop(context, {
             'title': widget.currency.title,
             'photo': widget.index,

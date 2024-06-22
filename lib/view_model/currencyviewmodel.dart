@@ -4,15 +4,16 @@ import 'package:converter_app/services/currecyservice.dart';
 class Currencyviewmodel {
   List<Currency> _list = [];
   final httpservice = Currecyservice();
+  List<Currency> _filterlist = [];
   Future<List<Currency>> getCurency([String title = '']) async {
     _list = await httpservice.getCurrency();
-    List<Currency> _filterlist = [];
     for (var i in _list) {
       print(i.title);
       if (i.title.toLowerCase().contains(title.toLowerCase())) {
         _filterlist.add(i);
       }
     }
+
     _list = _filterlist;
     return [..._list];
   }
@@ -26,5 +27,17 @@ class Currencyviewmodel {
       }
     }
     return [..._notnull];
+  }
+
+  Future<Currency> getDollar() async {
+    Currency? _dollar;
+
+    _list = await httpservice.getCurrency();
+    for (var element in _list) {
+      if (element.code == 'USD') {
+        _dollar = element;
+      }
+    }
+    return _dollar!;
   }
 }
