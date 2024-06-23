@@ -1,5 +1,6 @@
 import 'package:converter_app/view_model/currencyviewmodel.dart';
 import 'package:converter_app/views/widgets/currencyinfo.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -16,62 +17,64 @@ class _HomepageState extends State<Homepage> {
   bool issearch = false;
   final titlecontroller = TextEditingController();
   final formkey = GlobalKey<FormState>();
-  filter() {
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        actions: [
-          issearch
-              ? TextButton(
-                  onPressed: () {
-                    issearch = !issearch;
-                    titlecontroller.clear();
-
-                    setState(() {});
-                  },
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                )
-              : IconButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(
-                        Theme.of(context).colorScheme.inversePrimary),
-                  ),
-                  onPressed: () {
-                    issearch = !issearch;
-                    setState(() {});
-                  },
-                  icon: const Icon(Icons.search),
-                )
-        ],
-        title: issearch
-            ? Form(
-                key: formkey,
-                child: TextFormField(
-                  controller: titlecontroller,
-                  decoration: InputDecoration(
-                    labelText: 'Input currency',
-                    fillColor: Theme.of(context).colorScheme.inversePrimary,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60.0),
+        child: StatefulBuilder(
+          builder: (context, setAppBarState) {
+            return AppBar(
+              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+              actions: [
+                issearch
+                    ? TextButton(
+                        onPressed: () {
+                          setAppBarState(() {
+                            issearch = !issearch;
+                            titlecontroller.clear();
+                          });
+                        },
+                        child: Text(
+                          context.tr('appbarcancel'),
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                      )
+                    : IconButton(
+                        onPressed: () {
+                          setAppBarState(() {
+                            issearch = !issearch;
+                          });
+                        },
+                        icon: const Icon(Icons.search),
+                      )
+              ],
+              title: issearch
+                  ? Form(
+                      key: formkey,
+                      child: TextFormField(
+                        controller: titlecontroller,
+                        decoration: InputDecoration(
+                          labelText: context.tr('inputappbar'),
+                          fillColor:
+                              Theme.of(context).colorScheme.inversePrimary,
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setState(() {});
+                        },
+                      ))
+                  : Text(
+                      context.tr('mainappbar'),
+                      style: GoogleFonts.aboreto(),
                     ),
-                  ),
-                  onChanged: (value) {
-                    filter();
-                  },
-                ))
-            : Text(
-                'Курс валют',
-                style: GoogleFonts.aboreto(),
-              ),
+            );
+          },
+        ),
       ),
       body: Column(
         children: [

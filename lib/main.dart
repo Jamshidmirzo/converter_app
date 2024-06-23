@@ -15,8 +15,8 @@ void main(List<String> args) async {
         Locale("en"),
         Locale("ru"),
       ],
-      path: 'resources/langs',
-      startLocale: const Locale("en"),
+      path: 'resources/langs/',
+      startLocale: const Locale("uz"),
       child: Converter(),
     ),
   );
@@ -140,6 +140,9 @@ class _ConverterState extends State<Converter> {
           theme: light,
           darkTheme: dark,
           debugShowCheckedModeBanner: false,
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
           home: Splashpage(
             changeMainTheme: changeMainTheme,
           ),

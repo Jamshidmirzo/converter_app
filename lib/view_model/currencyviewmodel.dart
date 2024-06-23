@@ -8,12 +8,10 @@ class Currencyviewmodel {
   Future<List<Currency>> getCurency([String title = '']) async {
     _list = await httpservice.getCurrency();
     for (var i in _list) {
-      print(i.title);
       if (i.title.toLowerCase().contains(title.toLowerCase())) {
         _filterlist.add(i);
       }
     }
-
     _list = _filterlist;
     return [..._list];
   }

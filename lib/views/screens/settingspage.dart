@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:converter_app/views/widgets/showmoddombottomforfont.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,6 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
         return Padding(
           padding: EdgeInsets.all(20.0),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               ZoomTapAnimation(
                 onTap: () {
@@ -61,8 +63,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         )
                       : null,
                   leading: const Icon(CupertinoIcons.device_phone_portrait),
-                  title: const Text(
-                    'Like a telephone',
+                  title: Text(
+                    context.tr('lt'),
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
@@ -84,8 +86,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         )
                       : null,
                   leading: const Icon(Icons.light_mode),
-                  title: const Text(
-                    'Light mode',
+                  title: Text(
+                    context.tr('lm'),
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
@@ -107,8 +109,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         )
                       : null,
                   leading: const Icon(Icons.dark_mode),
-                  title: const Text(
-                    'Dark mode',
+                  title: Text(
+                    context.tr('dm'),
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
@@ -128,7 +130,7 @@ class _SettingsPageState extends State<SettingsPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Language',
+              context.tr('lng'),
               style: GoogleFonts.aboreto(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -140,6 +142,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   isChoiceuzbek = true;
                   isChoiceeng = false;
                   isChoicerus = false;
+                  context.setLocale(const Locale('uz'));
                 });
                 Navigator.pop(context);
               },
@@ -150,7 +153,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         color: Theme.of(context).colorScheme.inversePrimary,
                       )
                     : null,
-                title: Text('Uzbek',
+                title: Text(context.tr('uz'),
                     style: GoogleFonts.aboreto(
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.inversePrimary)),
@@ -173,6 +176,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   isChoiceuzbek = false;
                   isChoiceeng = false;
                   isChoicerus = true;
+                  context.setLocale(const Locale('ru'));
                 });
                 Navigator.pop(context);
               },
@@ -183,7 +187,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         color: Theme.of(context).colorScheme.inversePrimary,
                       )
                     : null,
-                title: Text('Russian',
+                title: Text(context.tr('ru'),
                     style: GoogleFonts.aboreto(
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.inversePrimary)),
@@ -206,6 +210,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   isChoiceuzbek = false;
                   isChoiceeng = true;
                   isChoicerus = false;
+                  context.setLocale(const Locale('en'));
                 });
                 Navigator.pop(context);
               },
@@ -216,7 +221,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         color: Theme.of(context).colorScheme.inversePrimary,
                       )
                     : null,
-                title: Text('English',
+                title: Text(context.tr('en'),
                     style: GoogleFonts.aboreto(
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.inversePrimary)),
@@ -254,7 +259,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Settings page"),
+        title: Text(context.tr('settingspg')),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: SafeArea(
@@ -267,17 +272,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: () {
                   _showModalBottomSheet(context);
                 },
-                child: const ListTile(
+                child: ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(
                     Icons.language,
                     size: 50,
                   ),
                   title: Text(
-                    "Language",
-                    style: TextStyle(
+                    context.tr('lng'),
+                    style: const TextStyle(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios_rounded),
@@ -290,20 +294,19 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: () {
                   _showFontBottomSheet(context);
                 },
-                child: const ListTile(
+                child: ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.text_fields_sharp,
                     size: 50,
                   ),
                   title: Text(
-                    "Change Font",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                    context.tr('chfont'),
+                    style: const TextStyle(
                       fontSize: 20,
                     ),
                   ),
-                  trailing: Icon(Icons.arrow_forward_ios_rounded),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded),
                 ),
               ),
               const SizedBox(
@@ -313,17 +316,17 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: () {
                   _showModalBottomSheetForMode(context);
                 },
-                child: const ListTile(
+                child: ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.dark_mode_outlined,
                     size: 50,
                   ),
                   title: Text(
-                    "Change mode",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+                    context.tr('chmode'),
+                    style: const TextStyle(fontSize: 23),
                   ),
-                  trailing: Icon(Icons.arrow_forward_ios_rounded),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded),
                 ),
               ),
             ],

@@ -1,5 +1,6 @@
-import 'package:converter_app/views/screens/excahngepage.dart';
 import 'package:converter_app/views/widgets/cards.dart';
+import 'package:converter_app/views/widgets/translatecurrency.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -53,7 +54,7 @@ class _CurrencyinfoState extends State<Currencyinfo> {
                     width: 10,
                   ),
                   Text(
-                    widget.currency.title,
+                    Translatecurrency().translator(code: widget.currency.code),
                     style: const TextStyle(
                       fontWeight: FontWeight.w900,
                     ),
@@ -80,7 +81,7 @@ class _CurrencyinfoState extends State<Currencyinfo> {
                 children: [
                   Column(
                     children: [
-                      const Text('Курс ЦБ'),
+                      Text(context.tr('maincurs')),
                       Text(
                         widget.currency.cb_price,
                         style: const TextStyle(fontWeight: FontWeight.bold),
@@ -89,7 +90,7 @@ class _CurrencyinfoState extends State<Currencyinfo> {
                   ),
                   Column(
                     children: [
-                      const Text('Покупка'),
+                      Text(context.tr('secondcurs')),
                       Text(
                         widget.currency.nbu_cell_price.isEmpty
                             ? '-'
@@ -100,7 +101,7 @@ class _CurrencyinfoState extends State<Currencyinfo> {
                   ),
                   Column(
                     children: [
-                      const Text('Продажа'),
+                      Text(context.tr('thirdcurs')),
                       Text(
                         widget.currency.cb_price,
                         style: const TextStyle(fontWeight: FontWeight.bold),
