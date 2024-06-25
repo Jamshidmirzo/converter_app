@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+
 import 'package:converter_app/views/screens/splashpage.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -120,6 +121,14 @@ class _ConverterState extends State<Converter> {
     setState(() {});
   }
 
+  Color maincolor = Colors.blue;
+  changeColorScheme(Color color) {
+    print(maincolor);
+    maincolor = color;
+    print(maincolor);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return AdaptiveTheme(
@@ -130,7 +139,7 @@ class _ConverterState extends State<Converter> {
       dark: ThemeData.dark().copyWith(
         textTheme: mainTextTheme,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
+          seedColor: maincolor,
           brightness: Brightness.dark,
         ),
       ),
@@ -144,8 +153,8 @@ class _ConverterState extends State<Converter> {
           supportedLocales: context.supportedLocales,
           locale: context.locale,
           home: Splashpage(
-            changeMainTheme: changeMainTheme,
-          ),
+              changeMainTheme: changeMainTheme,
+              changeColorScheme: changeColorScheme),
         );
       },
     );

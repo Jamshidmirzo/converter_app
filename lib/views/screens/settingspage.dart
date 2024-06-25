@@ -8,8 +8,12 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class SettingsPage extends StatefulWidget {
   final Function changeMainTheme;
+  Function changeColorScheme;
 
-  SettingsPage({super.key, required this.changeMainTheme});
+  SettingsPage(
+      {super.key,
+      required this.changeMainTheme,
+      required this.changeColorScheme});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -23,6 +27,18 @@ class _SettingsPageState extends State<SettingsPage> {
   bool isSystem = true;
   bool isDark = false;
   bool isLight = false;
+  List<Color> colors = [
+    Colors.blue,
+    Colors.white,
+    Colors.amber,
+    Colors.red,
+    Colors.deepPurple,
+    Colors.cyan,
+    Colors.green,
+    Colors.lightBlue,
+    Colors.orange,
+    Colors.pink
+  ];
 
   @override
   void initState() {
@@ -244,6 +260,51 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  void showForColor(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Change your app color',
+                style: TextStyle(fontSize: 23, color: Colors.amber),
+              ),
+              Flexible(
+                child: ListView.separated(
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(
+                      width: 10,
+                    );
+                  },
+                  scrollDirection: Axis.horizontal,
+                  itemCount: colors.length,
+                  itemBuilder: (context, index) {
+                    return ZoomTapAnimation(
+                      onTap: () {
+                        widget.changeColorScheme(colors[index]);
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: colors[index]),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void _showFontBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -329,6 +390,26 @@ class _SettingsPageState extends State<SettingsPage> {
                   trailing: const Icon(Icons.arrow_forward_ios_rounded),
                 ),
               ),
+              const SizedBox(
+                height: 20,
+              ),
+              ZoomTapAnimation(
+                onTap: () {
+                  showForColor(context);
+                },
+                child: const ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(
+                    Icons.color_lens_outlined,
+                    size: 50,
+                  ),
+                  title: Text(
+                    'Edit App Color',
+                    style: TextStyle(fontSize: 23),
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios_rounded),
+                ),
+              )
             ],
           ),
         ),

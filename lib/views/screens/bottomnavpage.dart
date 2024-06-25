@@ -7,8 +7,13 @@ import 'package:flutter/material.dart';
 
 class Bottomnavpage extends StatefulWidget {
   final Function changeMainTheme;
+  Function changeColorScheme;
 
-  Bottomnavpage({Key? key, required this.changeMainTheme}) : super(key: key);
+  Bottomnavpage(
+      {Key? key,
+      required this.changeMainTheme,
+      required this.changeColorScheme})
+      : super(key: key);
 
   @override
   State<Bottomnavpage> createState() => _BottomnavpageState();
@@ -24,7 +29,9 @@ class _BottomnavpageState extends State<Bottomnavpage> {
     screens = [
       const Homepage(),
       const ExchangePage(),
-      SettingsPage(changeMainTheme: widget.changeMainTheme),
+      SettingsPage(
+          changeMainTheme: widget.changeMainTheme,
+          changeColorScheme: widget.changeColorScheme),
     ];
   }
 

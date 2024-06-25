@@ -70,7 +70,6 @@ class _HomepageState extends State<Homepage> {
                       ))
                   : Text(
                       context.tr('mainappbar'),
-                      style: GoogleFonts.aboreto(),
                     ),
             );
           },

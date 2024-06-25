@@ -187,6 +187,7 @@ class _ExchangePageState extends State<ExchangePage> {
                                     ),
                                     padding: const EdgeInsets.all(10),
                                     child: TextFormField(
+                                      keyboardType: TextInputType.number,
                                       onChanged: (value) => exchange(),
                                       controller: currencyController,
                                       validator: (value) {

@@ -7,7 +7,11 @@ import 'package:lottie/lottie.dart';
 // ignore: must_be_immutable
 class Splashpage extends StatefulWidget {
   Function changeMainTheme;
-  Splashpage({super.key, required this.changeMainTheme});
+  Function changeColorScheme;
+  Splashpage(
+      {super.key,
+      required this.changeMainTheme,
+      required this.changeColorScheme});
 
   @override
   State<Splashpage> createState() => _SplashpageState();
@@ -22,7 +26,9 @@ class _SplashpageState extends State<Splashpage> {
           context,
           MaterialPageRoute(
             builder: (ctx) {
-              return Bottomnavpage(changeMainTheme: widget.changeMainTheme);
+              return Bottomnavpage(
+                  changeMainTheme: widget.changeMainTheme,
+                  changeColorScheme: widget.changeColorScheme);
             },
           ),
         );
