@@ -1,7 +1,9 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:converter_app/models/currency.dart';
 import 'package:converter_app/view_model/currencyviewmodel.dart';
+import 'package:converter_app/views/widgets/forCurrency.dart';
 import 'package:converter_app/views/widgets/cards.dart';
-import 'package:converter_app/views/widgets/currencyinfo.dart';
+import 'package:converter_app/views/widgets/translatecurrency.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -27,6 +29,7 @@ class _ExchangePageState extends State<ExchangePage> {
   bool buy = false;
   bool sell = true;
   bool _isLoading = true;
+  final transltor = Translatecurrency();
 
   final formKey = GlobalKey<FormState>();
 
@@ -66,47 +69,18 @@ class _ExchangePageState extends State<ExchangePage> {
     final response = await showModalBottomSheet(
       context: context,
       builder: (context) {
-        return FutureBuilder(
-          future: currencyViewModel.getfornotnull(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: Lottie.asset('assets/lotties/loading.json',
-                    width: 100, height: 100),
-              );
-            }
-            if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
-              );
-            }
-            if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(
-                child: Text(tr('snapshotempty')),
-              );
-            }
-            return ListView.separated(
-              padding: const EdgeInsets.all(20),
-              itemCount: snapshot.data!.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 15),
-              itemBuilder: (context, index) {
-                final currency = snapshot.data![index];
-                return Currencyinfo(
-                  indextopage: 0,
-                  currency: currency,
-                  index: index,
-                );
-              },
-            );
-          },
-        );
+        return Bottomforcurrency();
       },
     );
     if (response != null) {
-      setState(() {
-        firstTitle = response['title'];
-        currency = response['code'];
-      });
+      setState(
+        () {
+          firstTitle = response['title'];
+          code = response['code'];
+          buyPrice = double.parse(response['buyprice']);
+          sellPrice = double.parse(response['cellprice']);
+        },
+      );
     }
   }
 
@@ -156,12 +130,17 @@ class _ExchangePageState extends State<ExchangePage> {
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                           ),
-                                          child: Cards(code: currency),
+                                          child: Cards(code: code),
                                         ),
                                         const SizedBox(width: 30),
                                         Text(
-                                          firstTitle,
-                                          style: const TextStyle(
+                                          transltor.translator(code: code),
+                                          style: TextStyle(
+                                            color: AdaptiveTheme.of(context)
+                                                        .mode ==
+                                                    AdaptiveThemeMode.light
+                                                ? Colors.black
+                                                : Colors.white,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
                                           ),
@@ -200,8 +179,17 @@ class _ExchangePageState extends State<ExchangePage> {
                                         return null;
                                       },
                                       decoration: InputDecoration(
-                                        labelText:
-                                            tr('exchinput', args: [currency]),
+                                        label: Text(
+                                          tr('exchinput', args: [currency]),
+                                          style: TextStyle(
+                                            color: AdaptiveTheme.of(context)
+                                                        .mode ==
+                                                    AdaptiveThemeMode.light
+                                                ? Colors.black
+                                                : Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                         prefixIcon:
                                             const Icon(Icons.monetization_on),
                                         border: OutlineInputBorder(
@@ -217,13 +205,15 @@ class _ExchangePageState extends State<ExchangePage> {
                                 alignment: const Alignment(0.9, -0.3),
                                 child: ZoomTapAnimation(
                                   onTap: () {
-                                    setState(() {
-                                      currency = code;
-                                      buy = true;
-                                      sell = false;
-                                      currencyController.clear();
-                                      result = 0;
-                                    });
+                                    setState(
+                                      () {
+                                        currency = code;
+                                        buy = true;
+                                        sell = false;
+                                        currencyController.clear();
+                                        result = 0;
+                                      },
+                                    );
                                   },
                                   child: Container(
                                     alignment: Alignment.center,
@@ -235,7 +225,11 @@ class _ExchangePageState extends State<ExchangePage> {
                                     ),
                                     child: Text(
                                       context.tr('secondcurs'),
-                                      style: const TextStyle(
+                                      style: TextStyle(
+                                        color: AdaptiveTheme.of(context).mode ==
+                                                AdaptiveThemeMode.light
+                                            ? Colors.black
+                                            : Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                       ),
@@ -264,11 +258,15 @@ class _ExchangePageState extends State<ExchangePage> {
                                     height: 80,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: Colors.black.withOpacity(0.7),
+                                      color: Colors.black.withOpacity(0.5),
                                     ),
                                     child: Text(
                                       context.tr('thirdcurs'),
-                                      style: const TextStyle(
+                                      style: TextStyle(
+                                        color: AdaptiveTheme.of(context).mode ==
+                                                AdaptiveThemeMode.light
+                                            ? Colors.black
+                                            : Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
                                       ),
@@ -284,7 +282,11 @@ class _ExchangePageState extends State<ExchangePage> {
                           children: [
                             Text(
                               result.toStringAsFixed(2),
-                              style: const TextStyle(
+                              style: TextStyle(
+                                color: AdaptiveTheme.of(context).mode ==
+                                        AdaptiveThemeMode.light
+                                    ? Colors.black
+                                    : Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 40,
                               ),
@@ -292,8 +294,12 @@ class _ExchangePageState extends State<ExchangePage> {
                             const SizedBox(width: 5),
                             Text(
                               buy ? "UZS" : code,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
+                                color: AdaptiveTheme.of(context).mode ==
+                                        AdaptiveThemeMode.light
+                                    ? Colors.black
+                                    : Colors.white,
                                 fontSize: 40,
                               ),
                             ),

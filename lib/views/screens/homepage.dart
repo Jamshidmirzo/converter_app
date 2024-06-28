@@ -2,7 +2,6 @@ import 'package:converter_app/view_model/currencyviewmodel.dart';
 import 'package:converter_app/views/widgets/currencyinfo.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 class Homepage extends StatefulWidget {
@@ -23,15 +22,13 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
-        child: StatefulBuilder(
-          builder: (context, setAppBarState) {
-            return AppBar(
+        child: AppBar(
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
               actions: [
                 issearch
                     ? TextButton(
                         onPressed: () {
-                          setAppBarState(() {
+                          setState(() {
                             issearch = !issearch;
                             titlecontroller.clear();
                           });
@@ -43,7 +40,7 @@ class _HomepageState extends State<Homepage> {
                       )
                     : IconButton(
                         onPressed: () {
-                          setAppBarState(() {
+                          setState(() {
                             issearch = !issearch;
                           });
                         },
@@ -65,15 +62,15 @@ class _HomepageState extends State<Homepage> {
                           ),
                         ),
                         onChanged: (value) {
+                          currcenviewmodel.getCurency(titlecontroller.text);
                           setState(() {});
                         },
                       ))
                   : Text(
                       context.tr('mainappbar'),
                     ),
-            );
-          },
-        ),
+            ),
+          
       ),
       body: Column(
         children: [
@@ -97,6 +94,7 @@ class _HomepageState extends State<Homepage> {
                     child: Text('ma`lumotlar hozircha yoq!'),
                   );
                 }
+                print('${snapshot.data!.length} smth');
                 return ListView.separated(
                   separatorBuilder: (context, index) {
                     return const SizedBox(

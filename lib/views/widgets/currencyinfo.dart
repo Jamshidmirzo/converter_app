@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:converter_app/views/widgets/cards.dart';
 import 'package:converter_app/views/widgets/translatecurrency.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -28,7 +29,7 @@ class _CurrencyinfoState extends State<Currencyinfo> {
       onTap: () {
         if (widget.indextopage == 0) {
           Navigator.pop(context, {
-            'title': widget.currency.title,
+            'title': tr(widget.currency.code),
             'photo': widget.index,
             'buyprice': widget.currency.nbu_buy_price,
             'cellprice': widget.currency.nbu_cell_price,
@@ -55,7 +56,11 @@ class _CurrencyinfoState extends State<Currencyinfo> {
                   ),
                   Text(
                     Translatecurrency().translator(code: widget.currency.code),
-                    style: const TextStyle(
+                    style: TextStyle(
+                      color: AdaptiveTheme.of(context).mode ==
+                              AdaptiveThemeMode.light
+                          ? Colors.black
+                          : Colors.white,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
@@ -81,30 +86,72 @@ class _CurrencyinfoState extends State<Currencyinfo> {
                 children: [
                   Column(
                     children: [
-                      Text(context.tr('maincurs')),
+                      Text(
+                        context.tr('maincurs'),
+                        style: TextStyle(
+                          color: AdaptiveTheme.of(context).mode ==
+                                  AdaptiveThemeMode.light
+                              ? Colors.black
+                              : Colors.white,
+                        ),
+                      ),
                       Text(
                         widget.currency.cb_price,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AdaptiveTheme.of(context).mode ==
+                                  AdaptiveThemeMode.light
+                              ? Colors.black
+                              : Colors.white,
+                        ),
                       ),
                     ],
                   ),
                   Column(
                     children: [
-                      Text(context.tr('secondcurs')),
+                      Text(
+                        context.tr('secondcurs'),
+                        style: TextStyle(
+                          color: AdaptiveTheme.of(context).mode ==
+                                  AdaptiveThemeMode.light
+                              ? Colors.black
+                              : Colors.white,
+                        ),
+                      ),
                       Text(
                         widget.currency.nbu_cell_price.isEmpty
                             ? '-'
                             : widget.currency.nbu_cell_price,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AdaptiveTheme.of(context).mode ==
+                                  AdaptiveThemeMode.light
+                              ? Colors.black
+                              : Colors.white,
+                        ),
                       ),
                     ],
                   ),
                   Column(
                     children: [
-                      Text(context.tr('thirdcurs')),
+                      Text(
+                        context.tr('thirdcurs'),
+                        style: TextStyle(
+                          color: AdaptiveTheme.of(context).mode ==
+                                  AdaptiveThemeMode.light
+                              ? Colors.black
+                              : Colors.white,
+                        ),
+                      ),
                       Text(
                         widget.currency.cb_price,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AdaptiveTheme.of(context).mode ==
+                                  AdaptiveThemeMode.light
+                              ? Colors.black
+                              : Colors.white,
+                        ),
                       ),
                     ],
                   )

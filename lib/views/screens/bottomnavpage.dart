@@ -5,15 +5,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class Bottomnavpage extends StatefulWidget {
-  final Function changeMainTheme;
-  Function changeColorScheme;
-
-  Bottomnavpage(
-      {Key? key,
-      required this.changeMainTheme,
-      required this.changeColorScheme})
-      : super(key: key);
+  Bottomnavpage({Key? key});
 
   @override
   State<Bottomnavpage> createState() => _BottomnavpageState();
@@ -29,9 +23,7 @@ class _BottomnavpageState extends State<Bottomnavpage> {
     screens = [
       const Homepage(),
       const ExchangePage(),
-      SettingsPage(
-          changeMainTheme: widget.changeMainTheme,
-          changeColorScheme: widget.changeColorScheme),
+      SettingsPage(),
     ];
   }
 
@@ -58,7 +50,7 @@ class _BottomnavpageState extends State<Bottomnavpage> {
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.currency_exchange_outlined),
-            label: tr('exchange'),
+            label: tr('excahnge'),
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.settings),

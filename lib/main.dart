@@ -1,5 +1,4 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-
 import 'package:converter_app/views/screens/splashpage.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,7 @@ void main(List<String> args) async {
 }
 
 class Converter extends StatefulWidget {
-  Converter({super.key});
+  const Converter({super.key});
 
   @override
   State<Converter> createState() => _ConverterState();
@@ -33,129 +32,68 @@ class Converter extends StatefulWidget {
 class _ConverterState extends State<Converter> {
   TextTheme mainTextTheme = GoogleFonts.aboretoTextTheme();
 
+  late Future<Color> mainColorFuture;
+
   @override
   void initState() {
     super.initState();
-    _loadFontPreference();
+    mainColorFuture = initializeSharedPreference();
   }
 
-  Future<void> _loadFontPreference() async {
-    SharedPreferences sharedpref = await SharedPreferences.getInstance();
-    String? font = sharedpref.getString('font');
-    setState(() {
-      mainTextTheme = _getFontByName(font);
-    });
-  }
+  Future<Color> initializeSharedPreference() async {
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    int? color = sharedPrefs.getInt('color');
 
-  TextTheme _getFontByName(String? fontName) {
-    switch (fontName) {
-      case 'RobotoCondensed':
-        return GoogleFonts.robotoCondensedTextTheme();
-      case 'NewRocker':
-        return GoogleFonts.newRockerTextTheme();
-      case 'Actor':
-        return GoogleFonts.actorTextTheme();
-      case 'Poppins':
-        return GoogleFonts.poppinsTextTheme();
-      case 'RobotoMono':
-        return GoogleFonts.robotoMonoTextTheme();
-      case 'Oswald':
-        return GoogleFonts.oswaldTextTheme();
-      case 'Sacramento':
-        return GoogleFonts.sacramentoTextTheme();
-      case 'Rubik':
-        return GoogleFonts.rubikTextTheme();
-      case 'PlayfairDisplay':
-        return GoogleFonts.playfairDisplayTextTheme();
-      default:
-        return GoogleFonts.aboretoTextTheme();
+    if (color == null) {
+      color = Colors.blue.value; 
+      await sharedPrefs.setInt('color', color);
     }
-  }
 
-  void changeMainTheme(int id) async {
-    SharedPreferences sharedpref = await SharedPreferences.getInstance();
-    String fontName;
-    switch (id) {
-      case 1:
-        fontName = 'RobotoCondensed';
-        mainTextTheme = GoogleFonts.robotoCondensedTextTheme();
-        break;
-      case 2:
-        fontName = 'NewRocker';
-        mainTextTheme = GoogleFonts.newRockerTextTheme();
-        break;
-      case 3:
-        fontName = 'Actor';
-        mainTextTheme = GoogleFonts.actorTextTheme();
-        break;
-      case 4:
-        fontName = 'Poppins';
-        mainTextTheme = GoogleFonts.poppinsTextTheme();
-        break;
-      case 5:
-        fontName = 'RobotoMono';
-        mainTextTheme = GoogleFonts.robotoMonoTextTheme();
-        break;
-      case 6:
-        fontName = 'Oswald';
-        mainTextTheme = GoogleFonts.oswaldTextTheme();
-        break;
-      case 7:
-        fontName = 'Sacramento';
-        mainTextTheme = GoogleFonts.sacramentoTextTheme();
-        break;
-      case 8:
-        fontName = 'Rubik';
-        mainTextTheme = GoogleFonts.rubikTextTheme();
-        break;
-      case 9:
-        fontName = 'PlayfairDisplay';
-        mainTextTheme = GoogleFonts.playfairDisplayTextTheme();
-        break;
-      default:
-        fontName = 'Aboreto';
-        mainTextTheme = GoogleFonts.aboretoTextTheme();
-        break;
-    }
-    await sharedpref.setString('font', fontName);
-    setState(() {});
-  }
-
-  Color maincolor = Colors.blue;
-  changeColorScheme(Color color) {
-    print(maincolor);
-    maincolor = color;
-    print(maincolor);
-    setState(() {});
+    return Color(color);
   }
 
   @override
   Widget build(BuildContext context) {
-    return AdaptiveTheme(
-      light: ThemeData(
-        textTheme: mainTextTheme,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-      ),
-      dark: ThemeData.dark().copyWith(
-        textTheme: mainTextTheme,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: maincolor,
-          brightness: Brightness.dark,
-        ),
-      ),
-      initial: AdaptiveThemeMode.system,
-      builder: (light, dark) {
-        return MaterialApp(
-          theme: light,
-          darkTheme: dark,
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          home: Splashpage(
-              changeMainTheme: changeMainTheme,
-              changeColorScheme: changeColorScheme),
-        );
+    return FutureBuilder<Color>(
+      future: mainColorFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // While waiting for the future to complete, show a loading indicator
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          // If the future throws an error, show an error message
+          return const Center(child: Text('Error loading color'));
+        } else if (snapshot.hasData) {
+          // Once the future completes, use the color in the theme
+          final mainColor = snapshot.data!;
+          return AdaptiveTheme(
+            light: ThemeData(
+              textTheme: mainTextTheme,
+              colorScheme: ColorScheme.fromSeed(seedColor: mainColor),
+            ),
+            dark: ThemeData.dark().copyWith(
+              textTheme: mainTextTheme,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: mainColor,
+                brightness: Brightness.dark,
+              ),
+            ),
+            initial: AdaptiveThemeMode.system,
+            builder: (light, dark) {
+              return MaterialApp(
+                theme: light,
+                darkTheme: dark,
+                debugShowCheckedModeBanner: false,
+                localizationsDelegates: context.localizationDelegates,
+                supportedLocales: context.supportedLocales,
+                locale: context.locale,
+                home: Splashpage(),
+              );
+            },
+          );
+        } else {
+          return const Center(child: Text('Unexpected error'));
+        }
       },
     );
   }

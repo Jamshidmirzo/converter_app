@@ -4,8 +4,9 @@ import 'package:converter_app/services/currecyservice.dart';
 class Currencyviewmodel {
   List<Currency> _list = [];
   final httpservice = Currecyservice();
-  List<Currency> _filterlist = [];
   Future<List<Currency>> getCurency([String title = '']) async {
+    List<Currency> _filterlist = [];
+    print(title);
     _list = await httpservice.getCurrency();
     for (var i in _list) {
       if (i.title.toLowerCase().contains(title.toLowerCase())) {
@@ -13,7 +14,8 @@ class Currencyviewmodel {
       }
     }
     _list = _filterlist;
-    return [..._list];
+
+    return _list;
   }
 
   Future<List<Currency>> getfornotnull() async {
