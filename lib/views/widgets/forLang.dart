@@ -47,8 +47,7 @@ class _BottomforlangState extends State<Bottomforlang> {
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                    image: NetworkImage(
-                        'https://www.worldatlas.com/img/flag/uz-flag.jpg'),
+                    image: AssetImage('assets/images/uz.png'),
                     fit: BoxFit.cover),
               ),
             ),
@@ -78,8 +77,7 @@ class _BottomforlangState extends State<Bottomforlang> {
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                    image: NetworkImage(
-                        'https://yourflag.com.au/wp-content/uploads/russia-federation-flag.jpg'),
+                    image: AssetImage('assets/images/rub.png'),
                     fit: BoxFit.cover),
               ),
             ),
@@ -109,8 +107,7 @@ class _BottomforlangState extends State<Bottomforlang> {
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                    image: NetworkImage(
-                        'https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/800px-Flag_of_the_United_Kingdom.svg.png'),
+                    image: AssetImage('assets/images/gbp.png'),
                     fit: BoxFit.cover),
               ),
             ),

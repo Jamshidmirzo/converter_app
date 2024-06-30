@@ -45,6 +45,7 @@ dependencies:
   shared_preferences: ^2.2.3
   text_to_speech: ^0.2.3
   icons_launcher: ^2.1.7
+  url_launcher: ^6.3.0
   
   
 
@@ -76,8 +77,8 @@ flutter:
   assets:
     - assets/logo.png
     - assets/lotties/
-    
     - resources/langs/
+    - assets/images/
  
 
   # An image asset can refer to one or more resolution-specific "variants", see

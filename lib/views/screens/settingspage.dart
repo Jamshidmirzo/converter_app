@@ -3,13 +3,16 @@ import 'package:converter_app/views/widgets/forColor.dart';
 import 'package:converter_app/views/widgets/forLang.dart';
 import 'package:converter_app/views/widgets/forMode.dart';
 import 'package:converter_app/views/widgets/forFont.dart';
+import 'package:converter_app/views/widgets/forQuestion.dart';
+import 'package:converter_app/views/widgets/forabout.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 // ignore: must_be_immutable
 class SettingsPage extends StatefulWidget {
-  SettingsPage({super.key});
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -35,7 +38,7 @@ class _SettingsPageState extends State<SettingsPage> {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return Bottomformode();
+        return const Bottomformode();
       },
     );
   }
@@ -44,7 +47,7 @@ class _SettingsPageState extends State<SettingsPage> {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return Bottomforlang();
+        return const Bottomforlang();
       },
     );
   }
@@ -62,7 +65,26 @@ class _SettingsPageState extends State<SettingsPage> {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return Showmoddombottomforfont();
+        return const Showmoddombottomforfont();
+      },
+    );
+  }
+
+  void showAbout(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return const Forabout();
+      },
+    );
+  }
+
+  void showTelegram(BuildContext context) {
+    const telegramUrl = 'https://t.me/sumswap_bot';
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return const Forquestion(telegramUrl: telegramUrl);
       },
     );
   }
@@ -90,7 +112,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(
                     Icons.language,
-                    size: 50,
+                    size: 40,
                   ),
                   title: Text(
                     context.tr('lng'),
@@ -112,7 +134,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(
                     Icons.text_fields_sharp,
-                    size: 50,
+                    size: 40,
                   ),
                   title: Text(
                     context.tr('chfont'),
@@ -134,11 +156,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(
                     Icons.dark_mode_outlined,
-                    size: 50,
+                    size: 40,
                   ),
                   title: Text(
                     context.tr('chmode'),
-                    style: const TextStyle(fontSize: 23),
+                    style: const TextStyle(fontSize: 20),
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios_rounded),
                 ),
@@ -150,19 +172,59 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: () {
                   showForColor(context);
                 },
-                child: const ListTile(
+                child: ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.color_lens_outlined,
-                    size: 50,
+                    size: 40,
                   ),
                   title: Text(
-                    'Edit App Color',
-                    style: TextStyle(fontSize: 23),
+                    context.tr('edit'),
+                    style: const TextStyle(fontSize: 20),
                   ),
-                  trailing: Icon(Icons.arrow_forward_ios_rounded),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded),
                 ),
-              )
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ZoomTapAnimation(
+                onTap: () {
+                  showAbout(context);
+                },
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(
+                    Icons.app_registration_sharp,
+                    size: 40,
+                  ),
+                  title: Text(
+                    context.tr('aapp'),
+                    style: const TextStyle(fontSize: 23),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ZoomTapAnimation(
+                onTap: () {
+                  showTelegram(context);
+                },
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(
+                    CupertinoIcons.question_circle,
+                    size: 40,
+                  ),
+                  title: Text(
+                    context.tr('que'),
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                ),
+              ),
             ],
           ),
         ),

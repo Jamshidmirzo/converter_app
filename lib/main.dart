@@ -45,7 +45,7 @@ class _ConverterState extends State<Converter> {
     int? color = sharedPrefs.getInt('color');
 
     if (color == null) {
-      color = Colors.blue.value; 
+      color = Colors.blue.value;
       await sharedPrefs.setInt('color', color);
     }
 
@@ -58,13 +58,10 @@ class _ConverterState extends State<Converter> {
       future: mainColorFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // While waiting for the future to complete, show a loading indicator
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          // If the future throws an error, show an error message
           return const Center(child: Text('Error loading color'));
         } else if (snapshot.hasData) {
-          // Once the future completes, use the color in the theme
           final mainColor = snapshot.data!;
           return AdaptiveTheme(
             light: ThemeData(

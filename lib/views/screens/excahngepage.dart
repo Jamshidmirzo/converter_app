@@ -61,6 +61,7 @@ class _ExchangePageState extends State<ExchangePage> {
       double amount = double.parse(currencyController.text);
       setState(() {
         result = buy ? buyPrice * amount : amount / sellPrice;
+        print(buyPrice);
       });
     }
   }
@@ -79,6 +80,8 @@ class _ExchangePageState extends State<ExchangePage> {
           code = response['code'];
           buyPrice = double.parse(response['buyprice']);
           sellPrice = double.parse(response['cellprice']);
+          currencyController.clear();
+          result = 0;
         },
       );
     }
